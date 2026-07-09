@@ -5,9 +5,11 @@ function App(){
   //1. storage & state engine
   const [transactions, setTransactions] = useState(() => {
     const savedTransactions = localStorage.getItem('fintrack_data');
+    //if already data is present, retrieve it
     if (savedTransactions) {
       return JSON.parse(savedTransactions);
     }
+    //else return a sample data
     return [
       { id: 1, text: 'Sample Salary', amount: 50000, type: 'income', category: 'Salary' },
       { id: 2, text: 'Sample Groceries', amount: 2500, type: 'expense', category: 'Food' },
@@ -19,7 +21,10 @@ function App(){
     localStorage.setItem('fintrack_data', JSON.stringify(transactions));
   }, [transactions]);
   //2.input element controllers
-
+  const [text, setText] = useState('');
+  const [amount, setAmount] = useState('');
+  const [type, setType] = useState('expense');
+  const [category, setCategory] = useState('Food');
   //3.Mathematical metrics
   const income = transactions
     .filter(t => t.type === 'income')
@@ -33,7 +38,29 @@ function App(){
   //4. Recharts Layout Data transformer
 
   //5.Interaction Methods
+  //capture event in function (e)
+  const handleAddTransaction = (e)=>{
+    e.preventDefault();
+    
+    if(!text.trim() || !amount){
+      alert('Please fill out all feilds');
+      return;
+    }
+    
+    //Add the new transaction
+    const newTransaction = {
+      id: Date.now(),
+      text: text,
+      amount: parseFloat(amount),
+      type: type,
+      category: type === 'income' ? 'salary' : category
+    };
+    
+    setTransactions([newTransaction, ...transactions]);
+    setText('');
+    setAmount('');
 
+  }
   //6.Presentation Interface (JSX Renger)
   return(
     
@@ -60,6 +87,9 @@ function App(){
         </div>
       </section>
 
+      {/* Main Operational Workspaces */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+      
       </div>
   );
 }
