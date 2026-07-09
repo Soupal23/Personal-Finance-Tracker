@@ -61,6 +61,11 @@ function App(){
     setAmount('');
 
   }
+
+  const handleDeleteTransaction = (id) =>{
+    setTransactions(transactions.filter(t => t.id !== id));
+  }
+
   //6.Presentation Interface (JSX Renger)
   return(
     
