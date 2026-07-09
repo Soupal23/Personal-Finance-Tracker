@@ -21,7 +21,15 @@ function App(){
   //2.input element controllers
 
   //3.Mathematical metrics
+  const income = transactions
+    .filter(t => t.type === 'income')
+    .reduce((acc, t) => acc + t.amount, 0);
 
+  const expenses = transactions
+    .filter(t => t.type === 'expense')
+    .reduce((acc, t) => acc + t.amount, 0);
+
+  const balance = income - expenses;
   //4. Recharts Layout Data transformer
 
   //5.Interaction Methods
@@ -37,7 +45,20 @@ function App(){
       </header>
       
       {/* Top Math Summary Cards */}
-      
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <p className="text-sm text-gray-500">Net Balance</p>
+          <h2 className="text-2xl font-bold mt-1">₹{balance.toFixed(2)}</h2>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <p className="text-sm text-gray-500">Total Income</p>
+          <h2 className="text-2xl font-bold text-emerald-600 mt-1">+₹{income.toFixed(2)}</h2>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm">
+          <p className="text-sm text-gray-500">Total Expenses</p>
+          <h2 className="text-2xl font-bold text-rose-600 mt-1">-₹{expenses.toFixed(2)}</h2>
+        </div>
+      </section>
 
       </div>
   );
