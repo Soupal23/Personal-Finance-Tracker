@@ -140,7 +140,48 @@ function App(){
             </form>
           </div>
 
+          {/* Dynamic Data Ledger */}
+          <div className="bg-white p-5 rounded-lg shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-md font-bold">Transaction Ledger</h3>
+              {transactions.length > 0 && (
+                <button 
+                  onClick={() => {
+                    if(window.confirm('Clear all ledger records?')) {
+                      setTransactions([]);
+                      localStorage.removeItem('fintrack_data');
+                    }
+                  }} 
+                  className="text-xs text-rose-500 font-bold"
+                >
+                  Clear All
+                </button>
+              )}
+            </div>
 
+             {/* list down current transactions  */}
+
+            {transactions.length === 0 ? (
+              <p className="text-gray-400 text-sm py-4 text-center">Empty Ledger.</p>
+            ) : (
+              <div className="divide-y max-h-64 overflow-y-auto pr-1">
+                {transactions.map(t => (
+                  <div key={t.id} className="flex justify-between items-center py-2.5 text-sm">
+                    <div>
+                      <p className="font-medium text-gray-800">{t.text}</p>
+                      <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase font-bold">{t.category}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={t.type === 'income' ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                        {t.type === 'income' ? '+' : '-'}₹{t.amount}
+                      </span>
+                      <button onClick={() => handleDeleteTransaction(t.id)} className="text-gray-400 hover:text-rose-500">✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
         </div>      
       
