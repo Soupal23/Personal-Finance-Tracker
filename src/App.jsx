@@ -62,7 +62,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
     e.preventDefault();
     
     if(!text.trim() || !amount){
-      alert('Please fill out all feilds');
+      alert('Please fill out all fields');
       return;
     }
     
@@ -72,7 +72,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
       text: text,
       amount: parseFloat(amount),
       type: type,
-      category: type === 'income' ? 'salary' : category
+      category: type === 'income' ? 'Salary' : category
     };
     
     setTransactions([newTransaction, ...transactions]);
@@ -88,7 +88,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
   //6.Presentation Interface (JSX Renger)
   return(
     
-    <div className="bg-stale-100 min-h-screen md:p-8">
+    <div className="bg-slate-100 min-h-screen md:p-8">
 
     {/* Header banner */}
       <header className="bg-white p-4 rounded-lg shadow-sm mb-6 flex justify-between items-center">
