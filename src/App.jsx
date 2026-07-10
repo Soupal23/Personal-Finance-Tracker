@@ -93,8 +93,60 @@ function App(){
       </section>
 
       {/* Main Operational Workspaces */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Left Interactive Column (Forms & Ledger) */}
+        <div className="lg:col-span-2 space-y-6">
+          
+          {/* Entry Capture Form */}
+          <div className="bg-white p-5 rounded-lg shadow-sm">
+            <h3 className="text-md font-bold mb-4">Add New Record</h3>
+            <form onSubmit={handleAddTransaction} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input 
+                  type="text" 
+                  placeholder="Item details..." 
+                  value={text} 
+                  onChange={e => setText(e.target.value)} 
+                  className="border p-2 rounded w-full text-sm"
+                />
+                <input 
+                  type="number" 
+                  placeholder="Amount (₹)" 
+                  value={amount} 
+                  onChange={e => setAmount(e.target.value)} 
+                  className="border p-2 rounded w-full text-sm"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <select value={type} onChange={e => setType(e.target.value)} className="border p-2 rounded bg-white text-sm">
+                  <option value="expense">Expense Log</option>
+                  <option value="income">Income Log</option>
+                </select>
+                {type === 'expense' && (
+                  <select value={category} onChange={e => setCategory(e.target.value)} className="border p-2 rounded bg-white text-sm">
+                    <option value="Food">Food</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Misc">Miscellaneous</option>
+                  </select>
+                )}
+              </div>
+
+              <button type="submit" className="w-full bg-slate-800 text-white p-2 rounded font-medium text-sm">
+                Save Record
+              </button>
+            </form>
+          </div>
+
+
+
+        </div>      
       
+      </div>
+
+
       </div>
   );
 }
