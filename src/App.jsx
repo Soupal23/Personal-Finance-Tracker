@@ -37,6 +37,23 @@ function App(){
   const balance = income - expenses;
   //4. Recharts Layout Data transformer
 
+  const expenseTransactions = transactions.filter(t => t.type === 'expense');
+
+  const categoryTotals = expenseTransactions.reduce((acc, t) => {
+    acc[t.category] = (acc[t.category] || 0) + t.amount;
+    return acc;
+  }, {});
+
+  const chartData = Object.keys(categoryTotals).map(cat => ({
+    name: cat === 'Food' ? 'Food & Dining' : 
+          cat === 'Rent' ? 'Rent/Utilities' : 
+          cat === 'Entertainment' ? 'Entertainment' : 
+          cat === 'Medicine' ? 'Medical & Health' : 'Miscellaneous',
+    value: categoryTotals[cat]
+  }));
+
+const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
+
   //5.Interaction Methods
   //capture event in function (e)
   const handleAddTransaction = (e)=>{
@@ -129,6 +146,7 @@ function App(){
                     <option value="Food">Food</option>
                     <option value="Rent">Rent</option>
                     <option value="Entertainment">Entertainment</option>
+                    <option value="Medicine">Medicine</option>
                     <option value="Misc">Miscellaneous</option>
                   </select>
                 )}
