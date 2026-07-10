@@ -38,7 +38,8 @@ function App(){
   //4. Recharts Layout Data transformer
 
   const expenseTransactions = transactions.filter(t => t.type === 'expense');
-
+  
+  //calculating total amount per category
   const categoryTotals = expenseTransactions.reduce((acc, t) => {
     acc[t.category] = (acc[t.category] || 0) + t.amount;
     return acc;
@@ -55,6 +56,7 @@ function App(){
 const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
 
   //5.Interaction Methods
+
   //capture event in function (e)
   const handleAddTransaction = (e)=>{
     e.preventDefault();
@@ -109,7 +111,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
         </div>
       </section>
 
-      {/* Main Operational Workspaces */}
+      {/* Main  Workspaces */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Left Interactive Column (Forms & Ledger) */}
@@ -202,7 +204,33 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
           </div>
 
         </div>      
-      
+        
+        {/* Right Analytics Column (Visual Recharts Render) */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-5 rounded-lg shadow-sm h-full min-h-[300px]">
+            <h3 className="text-md font-bold mb-1">Expense Ratios</h3>
+            <p className="text-xs text-gray-400 mb-4">By category groups</p>
+            
+            <div className="h-48">
+              {chartData.length === 0 ? (
+                <p className="text-gray-400 text-sm text-center pt-16">No expense data.</p>
+              ) : (
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={45} outerRadius={65}>
+                      {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip formatter={(val) => `₹${val}`} />
+                    <Legend iconSize={8} wrapperStyle={{ fontSize: '11px' }} />
+                  </PieChart>
+                </ResponsiveContainer>
+              )}
+            </div>
+          </div>
+        </div>
+
       </div>
 
 
