@@ -60,9 +60,9 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
   //capture event in function (e)
   const handleAddTransaction = (e)=>{
     e.preventDefault();
-    
-    if(!text.trim() || !amount){
-      alert('Please fill out all fields');
+    const parsedAmount = parseFloat(amount);
+    if(!text.trim() || !amount || isNaN(parsedAmount) || parsedAmount<=0){
+      alert('Please enter valid details and an amount greater than 0');
       return;
     }
     
