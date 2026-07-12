@@ -3,21 +3,13 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recha
 import './App.css';
 
 function App(){
-  //1. storage & state engine
-  const [transactions, setTransactions] = useState(() => {
-    const savedTransactions = localStorage.getItem('fintrack_data');
-    //if data is present, retrieve it
-    if (savedTransactions) {
-      return JSON.parse(savedTransactions);
-    }
-    //else return empty legder
-    return [];
-  });
+  //1. state engine
+  const [transactions, setTransactions] = useState([]);
 
   // useEffect(() => {
   //   localStorage.setItem('fintrack_data', JSON.stringify(transactions));
   // }, [transactions]);
-  
+
   //2.input element controllers
   const [text, setText] = useState('');
   const [amount, setAmount] = useState('');
@@ -167,7 +159,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
                   onClick={() => {
                     if(window.confirm('Clear all ledger records?')) {
                       setTransactions([]);
-                      localStorage.removeItem('fintrack_data');
+                      
                     }
                   }} 
                   className="clear-btn"
