@@ -40,7 +40,7 @@ Data handling functions sanitize input strings and verify mathematical boundarie
 To clone, set up, and evaluate this application workspace on your local environment, run the following commands:
 
 ### 1.Clone the Source Files:
-git clone [https://github.com/your-username/your-repository-name.git](https://github.com/your-username/your-repository-name.git)
+git clone [https://github.com/Soupal23/Personal-Finance-Tracker.git](https://github.com/Soupal23/Personal-Finance-Tracker.git)
 
 ### 2.Navigate into the Project Root Directory:
 cd FinTrack-App
