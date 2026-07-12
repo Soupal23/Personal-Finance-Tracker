@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import './App.css';
 
 function App(){
   //1. storage & state engine
   const [transactions, setTransactions] = useState(() => {
     const savedTransactions = localStorage.getItem('fintrack_data');
-    //if already data is present, retrieve it
+    //if data is present, retrieve it
     if (savedTransactions) {
       return JSON.parse(savedTransactions);
     }
-    //else return a sample data
-    return [
-      { id: 1, text: 'Sample Salary', amount: 50000, type: 'income', category: 'Salary' },
-      { id: 2, text: 'Sample Groceries', amount: 2500, type: 'expense', category: 'Food' },
-      { id: 3, text: 'Movie Night', amount: 800, type: 'expense', category: 'Entertainment' }
-    ];
+    //else return empty legder
+    return [];
   });
 
-  useEffect(() => {
-    localStorage.setItem('fintrack_data', JSON.stringify(transactions));
-  }, [transactions]);
+  // useEffect(() => {
+  //   localStorage.setItem('fintrack_data', JSON.stringify(transactions));
+  // }, [transactions]);
+  
   //2.input element controllers
   const [text, setText] = useState('');
   const [amount, setAmount] = useState('');
@@ -88,63 +86,63 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
   //6.Presentation Interface (JSX Renger)
   return(
     
-    <div className="bg-slate-100 min-h-screen md:p-8">
+    <div className="app-container">
 
-    {/* Header banner */}
-      <header className="bg-white p-4 rounded-lg shadow-sm mb-6 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-emerald-600">FinTrack</h1>
+      {/* Header banner */}
+      <header className="header-banner">
+        <h1>FinTrack</h1>
       </header>
       
       {/* Top Math Summary Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-gray-500">Net Balance</p>
-          <h2 className="text-2xl font-bold mt-1">₹{balance.toFixed(2)}</h2>
+      <section className="summary-section">
+        <div className="card">
+          <p>Net Balance</p>
+          <h2>₹{balance.toFixed(2)}</h2>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-gray-500">Total Income</p>
-          <h2 className="text-2xl font-bold text-emerald-600 mt-1">+₹{income.toFixed(2)}</h2>
+        <div className="card">
+          <p>Total Income</p>
+          <h2 className="text-income">+₹{income.toFixed(2)}</h2>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow-sm">
-          <p className="text-sm text-gray-500">Total Expenses</p>
-          <h2 className="text-2xl font-bold text-rose-600 mt-1">-₹{expenses.toFixed(2)}</h2>
+        <div className="card">
+          <p>Total Expenses</p>
+          <h2 className="text-expense">-₹{expenses.toFixed(2)}</h2>
         </div>
       </section>
 
-      {/* Main  Workspaces */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Workspaces Layout */}
+      <div className="main-workspace">
         
-        {/* Left Interactive Column (Forms & Ledger) */}
-        <div className="lg:col-span-2 space-y-6">
+        {/* Left Interactive Column */}
+        <div className="left-column space-y-6">
           
           {/* Entry Capture Form */}
-          <div className="bg-white p-5 rounded-lg shadow-sm">
-            <h3 className="text-md font-bold mb-4">Add New Record</h3>
-            <form onSubmit={handleAddTransaction} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="panel">
+            <h3>Add New Record</h3>
+            <form onSubmit={handleAddTransaction} className="form-layout">
+              <div className="form-row">
                 <input 
                   type="text" 
                   placeholder="Item details..." 
                   value={text} 
                   onChange={e => setText(e.target.value)} 
-                  className="border p-2 rounded w-full text-sm"
+                  className="input-field"
                 />
                 <input 
                   type="number" 
                   placeholder="Amount (₹)" 
                   value={amount} 
                   onChange={e => setAmount(e.target.value)} 
-                  className="border p-2 rounded w-full text-sm"
+                  className="input-field"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <select value={type} onChange={e => setType(e.target.value)} className="border p-2 rounded bg-white text-sm">
+              <div className="form-row">
+                <select value={type} onChange={e => setType(e.target.value)} className="select-field">
                   <option value="expense">Expense Log</option>
                   <option value="income">Income Log</option>
                 </select>
                 {type === 'expense' && (
-                  <select value={category} onChange={e => setCategory(e.target.value)} className="border p-2 rounded bg-white text-sm">
+                  <select value={category} onChange={e => setCategory(e.target.value)} className="select-field">
                     <option value="Food">Food</option>
                     <option value="Rent">Rent</option>
                     <option value="Entertainment">Entertainment</option>
@@ -154,16 +152,16 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
                 )}
               </div>
 
-              <button type="submit" className="w-full bg-slate-800 text-white p-2 rounded font-medium text-sm">
+              <button type="submit" className="submit-btn">
                 Save Record
               </button>
             </form>
           </div>
 
           {/* Dynamic Data Ledger */}
-          <div className="bg-white p-5 rounded-lg shadow-sm">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-md font-bold">Transaction Ledger</h3>
+          <div className="panel">
+            <div className="ledger-header">
+              <h3>Transaction Ledger</h3>
               {transactions.length > 0 && (
                 <button 
                   onClick={() => {
@@ -172,7 +170,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
                       localStorage.removeItem('fintrack_data');
                     }
                   }} 
-                  className="text-xs text-rose-500 font-bold"
+                  className="clear-btn"
                 >
                   Clear All
                 </button>
@@ -182,38 +180,37 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
              {/* list down current transactions  */}
 
             {transactions.length === 0 ? (
-              <p className="text-gray-400 text-sm py-4 text-center">Empty Ledger.</p>
+              <p className="empty-text">Empty Ledger.</p>
             ) : (
-              <div className="divide-y max-h-64 overflow-y-auto pr-1">
+              <div className="ledger-list">
                 {transactions.map(t => (
-                  <div key={t.id} className="flex justify-between items-center py-2.5 text-sm">
-                    <div>
-                      <p className="font-medium text-gray-800">{t.text}</p>
-                      <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded uppercase font-bold">{t.category}</span>
+                  <div key={t.id} className="ledger-item">
+                    <div className="item-details">
+                      <p>{t.text}</p>
+                      <span className="category-badge">{t.category}</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className={t.type === 'income' ? 'text-emerald-600 font-bold' : 'text-rose-600 font-bold'}>
+                    <div className="item-actions">
+                      <span className={t.type === 'income' ? 'text-income font-bold' : 'text-expense font-bold'}>
                         {t.type === 'income' ? '+' : '-'}₹{t.amount}
                       </span>
-                      <button onClick={() => handleDeleteTransaction(t.id)} className="text-gray-400 hover:text-rose-500">✕</button>
+                      <button onClick={() => handleDeleteTransaction(t.id)} className="delete-btn">✕</button>
                     </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
-
-        </div>      
+        </div>     
         
         {/* Right Analytics Column (Visual Recharts Render) */}
-        <div className="lg:col-span-1">
-          <div className="bg-white p-5 rounded-lg shadow-sm h-full min-h-[300px]">
-            <h3 className="text-md font-bold mb-1">Expense Ratios</h3>
+        <div className="right-column">
+          <div className="panel chart-card">
+            <h3 className="mb-1">Expense Ratios</h3>
             <p className="text-xs text-gray-400 mb-4">By category groups</p>
             
-            <div className="h-48">
+            <div className="chart-wrapper">
               {chartData.length === 0 ? (
-                <p className="text-gray-400 text-sm text-center pt-16">No expense data.</p>
+                <p className="empty-text" style={{ paddingTop: '4rem' }}>No expense data.</p>
               ) : (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -232,9 +229,7 @@ const COLORS = ['#6366f1', '#f43f5e', '#ec4899', '#cbd5e1', '#14b8a6'];
         </div>
 
       </div>
-
-
-      </div>
+    </div>
   );
 }
 
